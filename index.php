@@ -23,7 +23,7 @@ $app->defineProperty('serverRequests', [
     'readonly' => true
 ]);
 
-$path = '/-server-request-' . md5($app->request->base);
+$path = '/server-request-' . md5($app->request->base);
 
 $app->routes->add($path, function() use ($app) {
     $name = (string) $app->request->query->get('n');
