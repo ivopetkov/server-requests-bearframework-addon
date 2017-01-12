@@ -14,11 +14,11 @@ $app = App::get();
 $context = $app->getContext(__FILE__);
 
 $context->assets->addDir('assets');
-$context->classes->add('IvoPetkov\ServerRequests', 'classes/ServerRequests.php');
+$context->classes->add('IvoPetkov\BearFrameworkAddons\ServerRequests', 'classes/ServerRequests.php');
 
 $app->defineProperty('serverRequests', [
     'init' => function() {
-        return new IvoPetkov\ServerRequests();
+        return new IvoPetkov\BearFrameworkAddons\ServerRequests();
     },
     'readonly' => true
 ]);
@@ -50,7 +50,7 @@ $app->hooks->add('responseCreated', function($response) use ($app, $context, $pa
         $initializeData = [
             'url' => $app->urls->get($path)
         ];
-        $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getUrl('assets/serverRequests.js') . '\';script.onload=function(){ivoPetkov.bearFramework.addons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
+        $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getUrl('assets/serverRequests.js') . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
         $domDocument->insertHTML($html);
         $response->content = $domDocument->saveHTML();
     }

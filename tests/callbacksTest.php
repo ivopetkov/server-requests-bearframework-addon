@@ -18,7 +18,7 @@ class CallbacksTest extends BearFrameworkAddonTestCase
      */
     public function testCallbacks()
     {
-        $serverRequests = new IvoPetkov\ServerRequests();
+        $serverRequests = new IvoPetkov\BearFrameworkAddons\ServerRequests();
         $this->assertFalse($serverRequests->exists('name1'));
         $serverRequests->add('name1', function($data) {
             return $data['var1'];

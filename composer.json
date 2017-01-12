@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "IvoPetkov\\": "classes/"
+            "IvoPetkov\\BearFrameworkAddons\\": "classes/"
         },
         "files": ["autoload.php"]
     }

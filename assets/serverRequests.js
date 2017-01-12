@@ -6,15 +6,14 @@
  */
 
 var ivoPetkov = ivoPetkov || {};
-ivoPetkov.bearFramework = ivoPetkov.bearFramework || {};
-ivoPetkov.bearFramework.addons = ivoPetkov.bearFramework.addons || {};
-ivoPetkov.bearFramework.addons.serverRequests = (function () {
+ivoPetkov.bearFrameworkAddons = ivoPetkov.bearFrameworkAddons || {};
+ivoPetkov.bearFrameworkAddons.serverRequests = (function () {
 
     var url = null;
 
     var sendRequest = function (name, data, onSuccess, onFail) {
         if (url === null) {
-            throw 'ivoPetkov.bearFramework.addons.serverRequests not initialized';
+            throw 'ivoPetkov.bearFrameworkAddons.serverRequests not initialized';
         }
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function ()
