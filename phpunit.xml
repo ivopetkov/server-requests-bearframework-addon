@@ -14,6 +14,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./classes/</directory>
+            <file>./autoload.php</file>
         </whitelist>
     </filter>
     <php>
