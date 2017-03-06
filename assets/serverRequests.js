@@ -21,7 +21,11 @@ ivoPetkov.bearFrameworkAddons.serverRequests = (function () {
             if (xmlhttp.readyState === 4)
             {
                 if (xmlhttp.status === 200) {
-                    var response = JSON.parse(xmlhttp.responseText);
+                    try {
+                        var response = JSON.parse(xmlhttp.responseText);
+                    } catch (e) {
+                        var response = {};
+                    }
                     if (typeof response.status !== 'undefined' && response.status === '1') {
                         if (typeof onSuccess !== 'undefined') {
                             onSuccess(response.text);
