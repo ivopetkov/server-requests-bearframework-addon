@@ -12,9 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
-        "bearframework/bearframework": "dev-master",
-        "ivopetkov/html5-dom-document-php": "*"
+        "php": ">=7.1.0",
+        "bearframework/bearframework": "dev-master|0.10.0-beta.1",
+        "ivopetkov/html5-dom-document-php": "0.3.*|0.4.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8"
