@@ -51,7 +51,7 @@ $app->hooks
                 $initializeData = [
                     'url' => $app->urls->get($path)
                 ];
-                $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getUrl('assets/serverRequests.js', ['cacheMaxAge' => 999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
+                $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getUrl('assets/serverRequests.js', ['cacheMaxAge' => 999999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
                 $domDocument = new IvoPetkov\HTML5DOMDocument();
                 $domDocument->loadHTML($response->content);
                 $domDocument->insertHTML($html);
