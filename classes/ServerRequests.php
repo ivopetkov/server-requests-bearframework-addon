@@ -27,10 +27,12 @@ class ServerRequests
      * 
      * @param string $name
      * @param callable $callback
+     * @return IvoPetkov\BearFrameworkAddons\ServerRequests Returns a reference to the object itself.
      */
-    public function add(string $name, callable $callback): void
+    public function add(string $name, callable $callback): \IvoPetkov\BearFrameworkAddons\ServerRequests
     {
         $this->callbacks[$name] = $callback;
+        return $this;
     }
 
     /**
