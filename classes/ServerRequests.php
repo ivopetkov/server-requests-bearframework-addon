@@ -51,12 +51,13 @@ class ServerRequests
      * 
      * @param string $name The name of the callback
      * @param array $data The data that will be passed to the callback
+     * @param \BearFramework\App\Response $response The response object that will be passed to the callback
      * @return string Returns the callback result
      */
-    public function execute(string $name, array $data): string
+    public function execute(string $name, array $data, \BearFramework\App\Response $response): string
     {
         if (isset($this->callbacks[$name])) {
-            return (string) call_user_func($this->callbacks[$name], $data);
+            return (string) call_user_func($this->callbacks[$name], $data, $response);
         }
         return '';
     }

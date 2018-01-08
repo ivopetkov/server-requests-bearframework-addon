@@ -33,12 +33,13 @@ $app->routes
             foreach ($formData as $postedValue) {
                 $data[$postedValue->name] = $postedValue->value;
             }
+            $response = new App\Response\JSON();
             if ($app->serverRequests->exists($name)) {
-                $result = ['status' => '1', 'text' => (string) $app->serverRequests->execute($name, $data)];
+                $result = ['status' => '1', 'text' => (string) $app->serverRequests->execute($name, $data, $response)];
             } else {
                 $result = ['status' => '0'];
             }
-            $response = new App\Response\JSON(json_encode($result));
+            $response->content = json_encode($result);
             $response->headers
             ->set($response->headers->make('X-Robots-Tag', 'noindex'))
             ->set($response->headers->make('Cache-Control', 'private, max-age=0'));
