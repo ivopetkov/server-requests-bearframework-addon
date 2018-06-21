@@ -41,7 +41,7 @@ $app->routes
             }
             $response->content = json_encode($result);
             $response->headers
-            ->set($response->headers->make('X-Robots-Tag', 'noindex'))
+            ->set($response->headers->make('X-Robots-Tag', 'noindex, nofollow'))
             ->set($response->headers->make('Cache-Control', 'private, max-age=0'));
             return $response;
         }, ['POST']);
