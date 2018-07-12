@@ -10,7 +10,7 @@
 /**
  * @runTestsInSeparateProcesses
  */
-class CallbacksTest extends BearFrameworkAddonTestCase
+class CallbacksTest extends BearFramework\AddonTests\PHPUnitTestCase
 {
 
     /**
