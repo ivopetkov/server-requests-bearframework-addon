@@ -8,10 +8,11 @@
  */
 
 use BearFramework\App;
+use IvoPetkov\HTML5DOMDocument;
 
 $app = App::get();
 
-$context = $app->context->get(__FILE__);
+$context = $app->contexts->get(__FILE__);
 
 $context->assets
         ->addDir('assets');
@@ -26,7 +27,7 @@ $app->shortcuts
 $path = '/-server-request-' . md5($app->request->base);
 
 $app->routes
-        ->add($path, function() use ($app) {
+        ->add('POST ' . $path, function() use ($app) {
             $name = (string) $app->request->query->getValue('n');
             $formData = $app->request->formData->getList();
             $data = [];
@@ -44,18 +45,18 @@ $app->routes
             ->set($response->headers->make('X-Robots-Tag', 'noindex, nofollow'))
             ->set($response->headers->make('Cache-Control', 'private, max-age=0'));
             return $response;
-        }, ['POST']);
+        });
 
-$app->hooks
-        ->add('responseCreated', function($response) use ($app, $context, $path) {
-            if ($response instanceof App\Response\HTML) {
+$app
+        ->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEventDetails $event) use ($app, $context, $path) {
+            if ($event->response instanceof App\Response\HTML) {
                 $initializeData = [
                     'url' => $app->urls->get($path)
                 ];
-                $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getUrl('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
-                $domDocument = new IvoPetkov\HTML5DOMDocument();
-                $domDocument->loadHTML($response->content);
+                $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
+                $domDocument = new HTML5DOMDocument();
+                $domDocument->loadHTML($event->response->content, HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
                 $domDocument->insertHTML($html);
-                $response->content = $domDocument->saveHTML();
+                $event->response->content = $domDocument->saveHTML();
             }
         });
