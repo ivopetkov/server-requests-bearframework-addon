@@ -48,15 +48,15 @@ $app->routes
         });
 
 $app
-        ->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEventDetails $event) use ($app, $context, $path) {
-            if ($event->response instanceof App\Response\HTML) {
+        ->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEventDetails $eventDetails) use ($app, $context, $path) {
+            if ($eventDetails->response instanceof App\Response\HTML) {
                 $initializeData = [
                     'url' => $app->urls->get($path)
                 ];
                 $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
                 $domDocument = new HTML5DOMDocument();
-                $domDocument->loadHTML($event->response->content, HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
+                $domDocument->loadHTML($eventDetails->response->content, HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
                 $domDocument->insertHTML($html);
-                $event->response->content = $domDocument->saveHTML();
+                $eventDetails->response->content = $domDocument->saveHTML();
             }
         });
