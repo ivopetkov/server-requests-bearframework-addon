@@ -8,7 +8,6 @@
  */
 
 use BearFramework\App;
-use IvoPetkov\HTML5DOMDocument;
 
 $app = App::get();
 
@@ -16,6 +15,7 @@ $context = $app->contexts->get(__FILE__);
 
 $context->assets
         ->addDir('assets');
+
 $context->classes
         ->add('IvoPetkov\BearFrameworkAddons\ServerRequests', 'classes/ServerRequests.php');
 
@@ -47,16 +47,17 @@ $app->routes
             return $response;
         });
 
-$app
-        ->addEventListener('beforeSendResponse', function(\BearFramework\App\BeforeSendResponseEventDetails $eventDetails) use ($app, $context, $path) {
-            if ($eventDetails->response instanceof App\Response\HTML) {
-                $initializeData = [
-                    'url' => $app->urls->get($path)
-                ];
-                $html = '<script>var script=document.createElement(\'script\');script.src=\'' . $context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 1]) . '\';script.onload=function(){ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');};document.head.appendChild(script);</script>';
-                $domDocument = new HTML5DOMDocument();
-                $domDocument->loadHTML($eventDetails->response->content, HTML5DOMDocument::ALLOW_DUPLICATE_IDS);
-                $domDocument->insertHTML($html);
-                $eventDetails->response->content = $domDocument->saveHTML();
-            }
+$app->clientShortcuts
+        ->add('serverRequests', function(IvoPetkov\BearFrameworkAddons\ClientShortcut $shortcut) use ($app, $context, $path) {
+            $shortcut->requirements[] = [
+                'type' => 'file',
+                'url' => $context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 2]),
+                'mimeType' => 'text/javascript'
+            ];
+            $initializeData = [
+                $app->urls->get($path)
+            ];
+            $shortcut->init = 'ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');';
+            $shortcut->get = 'return ivoPetkov.bearFrameworkAddons.serverRequests;';
         });
+

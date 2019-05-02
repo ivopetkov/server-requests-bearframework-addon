@@ -7,4 +7,8 @@
  * Free to use under the MIT license.
  */
 
-BearFramework\Addons::register('ivopetkov/server-requests-bearframework-addon', __DIR__);
+BearFramework\Addons::register('ivopetkov/server-requests-bearframework-addon', __DIR__, [
+    'require' => [
+        'ivopetkov/client-shortcuts-bearframework-addon'
+    ]
+]);

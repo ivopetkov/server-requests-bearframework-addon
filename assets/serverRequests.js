@@ -7,7 +7,7 @@
 
 var ivoPetkov = ivoPetkov || {};
 ivoPetkov.bearFrameworkAddons = ivoPetkov.bearFrameworkAddons || {};
-ivoPetkov.bearFrameworkAddons.serverRequests = (function () {
+ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.serverRequests || (function () {
 
     var url = null;
 
@@ -48,13 +48,45 @@ ivoPetkov.bearFrameworkAddons.serverRequests = (function () {
         xmlhttp.send(params);
     };
 
-    var send = function (url, data, onSuccess, onFail) {
-        sendRequest(url, data, onSuccess, onFail);
+    var send = function (url, data) {
+        if (typeof data === 'undefined') {
+            data = {};
+        }
+        Promise = window.Promise || function (callback) {
+            var thenCallbacks = [];
+            var catchCallback = null;
+            this.then = function (f) {
+                thenCallbacks.push(f);
+                return this;
+            };
+            this.catch = function (f) {
+                if (catchCallback === null) {
+                    catchCallback = f;
+                }
+                return this;
+            };
+            var resolve = function () {
+                for (var i in thenCallbacks) {
+                    thenCallbacks[i].apply(null, arguments);
+                }
+            };
+            var reject = function () {
+                if (catchCallback !== null) {
+                    catchCallback.apply(null, arguments);
+                }
+            };
+            window.setTimeout(function () {
+                callback(resolve, reject);
+            }, 16);
+        };
+        return new Promise(function (resolve, reject) {
+            sendRequest(url, data, resolve, reject);
+        });
     };
 
     var initialize = function (data) {
-        if (typeof data['url'] !== 'undefined') {
-            url = data['url'];
+        if (typeof data[0] !== 'undefined') {
+            url = data[0];
         }
     };
 
