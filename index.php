@@ -47,17 +47,13 @@ $app->routes
             return $response;
         });
 
-$app->clientShortcuts
-        ->add('serverRequests', function(IvoPetkov\BearFrameworkAddons\ClientShortcut $shortcut) use ($app, $context, $path) {
-            $shortcut->requirements[] = [
-                'type' => 'file',
-                'url' => $context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 2]),
-                'mimeType' => 'text/javascript'
-            ];
+$app->clientPackages
+        ->add('serverRequests', md5('1' . $path), function(IvoPetkov\BearFrameworkAddons\ClientPackage $package) use ($app, $context, $path) {
+            $package->addJSFile($context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 2]));
             $initializeData = [
                 $app->urls->get($path)
             ];
-            $shortcut->init = 'ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');';
-            $shortcut->get = 'return ivoPetkov.bearFrameworkAddons.serverRequests;';
+            $package->init = 'ivoPetkov.bearFrameworkAddons.serverRequests.initialize(' . json_encode($initializeData) . ');';
+            $package->get = 'return ivoPetkov.bearFrameworkAddons.serverRequests;';
         });
 

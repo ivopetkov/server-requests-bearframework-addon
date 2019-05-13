@@ -9,6 +9,6 @@
 
 BearFramework\Addons::register('ivopetkov/server-requests-bearframework-addon', __DIR__, [
     'require' => [
-        'ivopetkov/client-shortcuts-bearframework-addon'
+        'ivopetkov/client-packages-bearframework-addon'
     ]
 ]);
