@@ -1,7 +1,12 @@
 {
     "name": "ivopetkov/server-requests-bearframework-addon",
     "description": "Server requests addon for Bear Framework",
-    "keywords": ["ajax", "server requests", "addon", "Bear Framework"],
+    "keywords": [
+        "ajax",
+        "server requests",
+        "addon",
+        "Bear Framework"
+    ],
     "homepage": "https://github.com/ivopetkov/server-requests-bearframework-addon",
     "license": "MIT",
     "authors": [
@@ -15,13 +20,14 @@
         "php": ">=7.1.0",
         "bearframework/bearframework": "1.*",
         "ivopetkov/html5-dom-document-php": "2.*",
-        "ivopetkov/client-packages-bearframework-addon": "0.2.*"
+        "ivopetkov/client-packages-bearframework-addon": "1.*"
     },
     "require-dev": {
-        "bearframework/addon-tests": "0.3.*",
-        "phpunit/phpunit": "7.*"
+        "bearframework/addon-tests": "1.*"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "files": [
+            "autoload.php"
+        ]
     }
 }
