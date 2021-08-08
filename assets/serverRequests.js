@@ -16,10 +16,8 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
             throw 'ivoPetkov.bearFrameworkAddons.serverRequests not initialized';
         }
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function ()
-        {
-            if (xmlhttp.readyState === 4)
-            {
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
                 if (xmlhttp.status === 200) {
                     try {
                         var response = JSON.parse(xmlhttp.responseText);
