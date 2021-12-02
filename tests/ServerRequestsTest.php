@@ -7,11 +7,22 @@
  * Free to use under the MIT license.
  */
 
+use IvoPetkov\BearFrameworkAddons\ServerRequests;
+
 /**
  * @runTestsInSeparateProcesses
  */
-class CallbacksTest extends BearFramework\AddonTests\PHPUnitTestCase
+class ServerRequestsTest extends BearFramework\AddonTests\PHPUnitTestCase
 {
+
+    /**
+     * 
+     */
+    public function testShortcut()
+    {
+        $app = $this->getApp();
+        $this->assertTrue($app->serverRequests instanceof ServerRequests);
+    }
 
     /**
      * 
@@ -20,7 +31,7 @@ class CallbacksTest extends BearFramework\AddonTests\PHPUnitTestCase
     {
         $serverRequests = new IvoPetkov\BearFrameworkAddons\ServerRequests();
         $this->assertFalse($serverRequests->exists('name1'));
-        $serverRequests->add('name1', function(array $data) {
+        $serverRequests->add('name1', function (array $data) {
             return $data['var1'];
         });
         $response = new \BearFramework\App\Response\JSON();
@@ -37,7 +48,7 @@ class CallbacksTest extends BearFramework\AddonTests\PHPUnitTestCase
     {
         $serverRequests = new IvoPetkov\BearFrameworkAddons\ServerRequests();
         $this->assertFalse($serverRequests->exists('name1'));
-        $serverRequests->add('name1', function(array $data, \BearFramework\App\Response $response) {
+        $serverRequests->add('name1', function (array $data, \BearFramework\App\Response $response) {
             $response->cookies->set($response->cookies->make('X-Custom-1', 'value1'));
             return 'value2';
         });
@@ -46,5 +57,4 @@ class CallbacksTest extends BearFramework\AddonTests\PHPUnitTestCase
         $this->assertTrue($serverRequests->execute('name1', [], $response) === 'value2');
         $this->assertTrue($response->cookies->get('X-Custom-1')->value === 'value1');
     }
-
 }
