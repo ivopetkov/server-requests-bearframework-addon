@@ -13,14 +13,14 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
 
     var sendRequest = function (name, data, onSuccess, onFail) {
         if (url === null) {
-            throw 'ivoPetkov.bearFrameworkAddons.serverRequests not initialized';
+            throw new Error('ivoPetkov.bearFrameworkAddons.serverRequests not initialized');
         }
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4) {
-                if (xmlhttp.status === 200) {
+        var xhp = new XMLHttpRequest();
+        xhp.onreadystatechange = function () {
+            if (xhp.readyState === 4) {
+                if (xhp.status === 200) {
                     try {
-                        var response = JSON.parse(xmlhttp.responseText);
+                        var response = JSON.parse(xhp.responseText);
                     } catch (e) {
                         var response = {};
                     }
@@ -41,9 +41,9 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
             params.push(key + '=' + encodeURIComponent(data[key]));
         }
         params = params.join('&');
-        xmlhttp.open('POST', url + '?n=' + name, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(params);
+        xhp.open('POST', url + '?n=' + name, true);
+        xhp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhp.send(params);
     };
 
     var send = function (url, data) {
