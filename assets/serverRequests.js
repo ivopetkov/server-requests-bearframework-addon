@@ -11,7 +11,7 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
 
     var url = null;
 
-    var sendRequest = function (name, data, onSuccess, onFail) {
+    var sendRequest = function (name, data, timeout, onSuccess, onFail) {
         if (url === null) {
             throw new Error('ivoPetkov.bearFrameworkAddons.serverRequests not initialized');
         }
@@ -41,15 +41,20 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
             params.push(key + '=' + encodeURIComponent(data[key]));
         }
         params = params.join('&');
+        xhp.timeout = timeout * 1000;
         xhp.open('POST', url + '?n=' + name, true);
         xhp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhp.send(params);
     };
 
-    var send = function (url, data) {
+    var send = function (url, data, options) { // Available options: timeout (int in seconds)
         if (typeof data === 'undefined') {
             data = {};
         }
+        if (typeof options === 'undefined') {
+            options = {};
+        }
+        var timeout = typeof options.timeout !== "undefined" ? options.timeout : 60;
         Promise = window.Promise || function (callback) {
             var thenCallbacks = [];
             var catchCallback = null;
@@ -78,7 +83,7 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
             }, 16);
         };
         return new Promise(function (resolve, reject) {
-            sendRequest(url, data, resolve, reject);
+            sendRequest(url, data, timeout, resolve, reject);
         });
     };
 
