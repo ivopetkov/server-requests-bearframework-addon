@@ -24,7 +24,7 @@ $app->shortcuts
         return new IvoPetkov\BearFrameworkAddons\ServerRequests();
     });
 
-$path = '/-server-request-' . md5($app->request->base);
+$path = '/-server-request-' . substr(base_convert(md5($app->request->base), 16, 36), 0, 6);
 
 $app->routes
     ->add('POST ' . $path, function () use ($app) {
