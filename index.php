@@ -48,7 +48,7 @@ $app->routes
     });
 
 $app->clientPackages
-    ->add('serverRequests', function (IvoPetkov\BearFrameworkAddons\ClientPackage $package) use ($app, $context, $path) {
+    ->add('serverRequests', function (IvoPetkov\BearFrameworkAddons\ClientPackage $package) use ($app, $context, $path): void {
         //$package->addJSCode(file_get_contents($context->dir . '/assets/serverRequests.js'));
         $package->addJSFile($context->assets->getURL('assets/serverRequests.min.js', ['cacheMaxAge' => 999999999, 'version' => 4]));
         $initializeData = [
