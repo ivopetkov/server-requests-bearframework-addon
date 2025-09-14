@@ -36,15 +36,10 @@ ivoPetkov.bearFrameworkAddons.serverRequests = ivoPetkov.bearFrameworkAddons.ser
                 }
             }
         };
-        var params = [];
-        for (var key in data) {
-            params.push(key + '=' + encodeURIComponent(data[key]));
-        }
-        params = params.join('&');
         xhp.timeout = timeout * 1000;
         xhp.open('POST', url + '?n=' + name, true);
         xhp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhp.send(params);
+        xhp.send('d=' + encodeURIComponent(JSON.stringify(data)));
     };
 
     var send = function (url, data, options) { // Available options: timeout (int in seconds)
