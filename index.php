@@ -30,12 +30,19 @@ $app->routes
     ->add('POST ' . $path, function () use ($app) {
         $name = (string) $app->request->query->getValue('n');
         $formData = (string)$app->request->formData->getValue('d');
-        $data = strlen($formData) > 0 ? json_decode($formData, true, 100, JSON_THROW_ON_ERROR) : [];
         $response = new App\Response\JSON();
-        if ($app->serverRequests->exists($name)) {
-            $result = ['status' => '1', 'text' => (string) $app->serverRequests->execute($name, $data, $response)];
-        } else {
-            $result = ['status' => '0'];
+        $result = null;
+        try {
+            $data = strlen($formData) > 0 ? json_decode($formData, true, 100, JSON_THROW_ON_ERROR) : [];
+        } catch (Exception $e) {
+            $result = ['status' => '2'];
+        }
+        if ($result === null) {
+            if ($app->serverRequests->exists($name)) {
+                $result = ['status' => '1', 'text' => (string) $app->serverRequests->execute($name, $data, $response)];
+            } else {
+                $result = ['status' => '0'];
+            }
         }
         $response->content = json_encode($result);
         $response->headers
